@@ -1,0 +1,183 @@
+ AS V1.42 Beta [Bld 207] - Source File TEST2.S - Page 1 - 10/15/2021 16:49:16
+
+
+       1/       0 : =X'1F'               LED1       EQU   h'1F'
+       2/       0 : =X'20'               LED2       EQU   h'20'
+       3/       0 : =X'21'               LED3       EQU   h'21'
+       4/       0 : =X'22'               LED4       EQU   h'22'
+       5/       0 : =X'1B'               LED5       EQU   h'1B'
+       6/       0 : =X'1C'               LED6       EQU   h'1C'
+       7/       0 : =X'1D'               LED7       EQU   h'1D'
+       8/       0 : =X'1E'               LED8       EQU   h'1E'
+       9/       0 :                     
+      10/      40 :                         ORG    h'40'
+      11/      40 :                         
+      12/      40 :                     LOP1:
+      13/      40 : 8788                    BAL    LCLR
+      14/      41 : C08F                    L      R0,PTN1
+      15/      42 : 801F                    ST     R0,LED1
+      16/      43 : 8781                    BAL    LDISP
+      17/      44 :                     
+      18/      44 : 8788                    BAL    LCLR
+      19/      45 : C08F                    L      R0,PTN1
+      20/      46 : 8020                    ST     R0,LED2
+      21/      47 : 8781                    BAL    LDISP
+      22/      48 :                     
+      23/      48 : 8788                    BAL    LCLR
+      24/      49 : C08F                    L      R0,PTN1
+      25/      4A : 8021                    ST     R0,LED3
+      26/      4B : 8781                    BAL    LDISP
+      27/      4C :                     
+      28/      4C : 8788                    BAL    LCLR
+      29/      4D : C08F                    L      R0,PTN1
+      30/      4E : 8022                    ST     R0,LED4
+      31/      4F : 8781                    BAL    LDISP
+      32/      50 :                     
+      33/      50 : 8788                    BAL    LCLR
+      34/      51 : C08F                    L      R0,PTN1
+      35/      52 : 801B                    ST     R0,LED5
+      36/      53 : 8781                    BAL    LDISP
+      37/      54 :                     
+      38/      54 : 8788                    BAL    LCLR
+      39/      55 : C08F                    L      R0,PTN1
+      40/      56 : 801C                    ST     R0,LED6
+      41/      57 : 8781                    BAL    LDISP
+      42/      58 :                     
+      43/      58 : 8788                    BAL    LCLR
+      44/      59 : C08F                    L      R0,PTN1
+      45/      5A : 801D                    ST     R0,LED7
+      46/      5B : 8781                    BAL    LDISP
+      47/      5C :                     
+      48/      5C : 8788                    BAL    LCLR
+      49/      5D : C08F                    L      R0,PTN1
+      50/      5E : 801E                    ST     R0,LED8
+      51/      5F : 8781                    BAL    LDISP
+      52/      60 :                         
+      53/      60 : 8788                    BAL    LCLR
+      54/      61 : C090                    L      R0,PTN2
+      55/      62 : 801E                    ST     R0,LED8
+      56/      63 : 8781                    BAL    LDISP
+      57/      64 :                         
+      58/      64 : 8788                    BAL    LCLR
+      59/      65 : C090                    L      R0,PTN2
+      60/      66 : 801D                    ST     R0,LED7
+ AS V1.42 Beta [Bld 207] - Source File TEST2.S - Page 2 - 10/15/2021 16:49:16
+
+
+      61/      67 : 8781                    BAL    LDISP
+      62/      68 :                     
+      63/      68 : 8788                    BAL    LCLR
+      64/      69 : C090                    L      R0,PTN2
+      65/      6A : 801C                    ST     R0,LED6
+      66/      6B : 8781                    BAL    LDISP
+      67/      6C :                     
+      68/      6C : 8788                    BAL    LCLR         ;LED CLEAR
+      69/      6D : C090                    L      R0,PTN2      ;BALLパターン2
+      70/      6E : 801B                    ST     R0,LED5     ;1FhにBALLパターン2をセット
+      71/      6F : 8781                    BAL    LDISP         ;LED DISP
+      72/      70 :                         
+      73/      70 : 8788                    BAL    LCLR
+      74/      71 : C090                    L      R0,PTN2
+      75/      72 : 8022                    ST     R0,LED4
+      76/      73 : 8781                    BAL    LDISP
+      77/      74 :                         
+      78/      74 : 8788                    BAL    LCLR
+      79/      75 : C090                    L      R0,PTN2
+      80/      76 : 8021                    ST     R0,LED3
+      81/      77 : 8781                    BAL    LDISP
+      82/      78 :                     
+      83/      78 : 8788                    BAL    LCLR
+      84/      79 : C090                    L      R0,PTN2
+      85/      7A : 8020                    ST     R0,LED2
+      86/      7B : 8781                    BAL    LDISP
+      87/      7C :                     
+      88/      7C : 8788                    BAL    LCLR         ;LED CLEAR
+      89/      7D : C090                    L      R0,PTN2      ;BALLパターン2
+      90/      7E : 801F                    ST     R0,LED1     ;1FhにBALLパターン2をセット
+      91/      7F : 8781                    BAL    LDISP         ;LED DISP
+      92/      80 :                         
+      93/      80 : C740                    B      LOP1
+      94/      81 :                         
+      95/      81 :                     ;LED DISP
+      96/      81 :                     LDISP:
+      97/      81 : C091                    L      R0,WAIT1     ;WAIT値を取得
+      98/      82 :                     LOP2:
+      99/      82 : 2001                    PUSH   R0          ;WAIT値を保存
+     100/      83 : 9734                    BAL    (H'34')     ;LED表示ルーチンをCALL
+     101/      84 : 2002                    POP    R0          ;WAIT値を復元
+     102/      85 : 4041                    SI     R0,1,Z      ;R0 = R0 - 1を実行した後にR0がZeroなら1命令スキップ
+     103/      86 : C782                    B      LOP2        ;R0がZeroになるまでループ
+     104/      87 : 2003                    RET
+     105/      88 :                         
+     106/      88 :                     ;LED CLEAR
+     107/      88 :                     LCLR:
+     108/      88 : 6000                    CLEAR  R0
+     109/      89 : 6303                    CLEAR  X0
+     110/      8A : 0B08                    MVI    X0,8
+     111/      8B :                     LOP3:
+     112/      8B : A01A                    ST     R0,H'1A'(X0) ;1Ah+8から-8Byte分(1Bh)までをZeroクリア
+     113/      8C : 4341                    SI     X0,1,Z       ;X0 = X0 - 1を実行した後にX0がZeroなら1命令スキップ
+     114/      8D : C78B                    B      LOP3         ;X0がZeroになるまでループ
+     115/      8E : 2003                    RET
+     116/      8F :                         
+     117/      8F :                     PTN1:
+     118/      8F : 00C6                    DC     H'C6'        ;BALLパターン1
+     119/      90 :                     PTN2:
+     120/      90 : 003A                    DC     H'3A'        ;BALLパターン2
+ AS V1.42 Beta [Bld 207] - Source File TEST2.S - Page 3 - 10/15/2021 16:49:16
+
+
+     121/      91 :                     WAIT1:
+     122/      91 : 0010                    DC     H'10'        ;WAIT値
+     123/      92 :                         
+     124/      92 :                         END
+ AS V1.42 Beta [Bld 207] - Source File TEST2.S() - Page 4 - 10/15/2021 16:49:16
+
+
+  Symbol Table (* = unused):
+  --------------------------
+
+*ARCHITECTURE :                                        "i386-unknown-win32" - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - | *COMPMODE :                       0 - |
+*CONSTPI :        3.141592653589793 - | *CUSTOM :                         0 - |
+*DATE :                "10/15/2021" - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          0 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ LCLR :                          88 C |  LDISP :                         81 C |
+ LED1 :                          1F - |  LED2 :                          20 - |
+ LED3 :                          21 - |  LED4 :                          22 - |
+ LED5 :                          1B - |  LED6 :                          1C - |
+ LED7 :                          1D - |  LED8 :                          1E - |
+*LISTON :                         1 - |  LOP1 :                          40 C |
+ LOP2 :                          82 C |  LOP3 :                          8B C |
+*MACEXP :                         7 - | *MOMCPU :                      1610 - |
+*MOMCPUNAME :              "MN1610" - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ PTN1 :                          8F C |  PTN2 :                          90 C |
+*RELAXED :                        0 - | *TIME :                  "16:49:16" - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT1 :                         91 C | *Z80SYNTAX :                      0 - |
+
+     47 symbols
+     31 unused symbols
+
+ AS V1.42 Beta [Bld 207] - Source File TEST2.S() - Page 5 - 10/15/2021 16:49:16
+
+
+  Code Pages:
+  ----------
+
+STANDARD (0 changed characters)
+
+1 code page
+
+0.03 seconds assembly time
+
+    126 lines source file
+      2 passes
+      0 errors
+      0 warnings
