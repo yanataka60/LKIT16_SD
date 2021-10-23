@@ -10,10 +10,16 @@ EXEAD    EQU   X'0025'     ;FUNC(3)
 ADRS_DISP EQU  X'001A'     ;アドレス部表示バッファ
 
 
+;    ORG    X'0149'
+;    DC     LOAD_START      ;TLOAD定数
+;    DC     SAVE_START      ;TLOAD定数
+
     ORG    X'0416'         ;ROM先頭アドレス
 ;    ORG    X'0500'         ;テスト用拡張ROM先頭アドレス
     
+LOAD_START:
     B      SDLOAD
+SAVE_START:
     B      SDSAVE
 
 INIT:                      ;SCA初期化 DIモード

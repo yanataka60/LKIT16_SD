@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 1 - 10/23/2021 8:23:17
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 1 - 10/23/2021 11:45:10
 
 
        1/       0 :                                                ; ST0   IN  CHK            アダプタ 12
@@ -13,285 +13,291 @@
       10/       0 : =X'1A'               ADRS_DISP EQU  X'001A'     ;アドレス部表示バッファ
       11/       0 :                     
       12/       0 :                     
-      13/     416 :                         ORG    X'0416'         ;ROM先頭アドレス
-      14/     416 :                     ;    ORG    X'0500'         ;テスト用拡張ROM先頭アドレス
-      15/     416 :                         
-      16/     416 : CF17                    B      SDLOAD
-      17/     417 : CF30                    B      SDSAVE
-      18/     418 :                     
-      19/     418 :                     INIT:                      ;SCA初期化 DIモード
-      20/     418 : 6101                    CLR    R1
-      21/     419 : 0908                    MVI    R1,X'08'
-      22/     41A : 1150                    WT     R1,X'50'
-      23/     41B : 2003                    RET
-      24/     41C :                     
-      25/     41C :                     SVERR:                     ;SDカードエラー処理
-      26/     41C : 089E                    MVI    R0,X'9E'        ;errと表示して停止
-      27/     41D : 801F                    ST     R0,X'1F'
-      28/     41E : 080E                    MVI    R0,X'0E'
-      29/     41F : 8020                    ST     R0,X'20'
-      30/     420 : 080E                    MVI    R0,X'0E'
-      31/     421 : 8021                    ST     R0,X'21'
-      32/     422 : 6000                    CLR    R0
-      33/     423 : 8022                    ST     R0,X'22'
-      34/     424 : 801B                    ST     R0,X'1B'
-      35/     425 : 801C                    ST     R0,X'1C'
-      36/     426 : 801D                    ST     R0,X'1D'
-      37/     427 : 801E                    ST     R0,X'1E'
-      38/     428 :                     
-      39/     428 : 9734                    BAL    (X'34')
-      40/     429 : 9733                    BAL    (X'33')         ;STOP以外のキー押下でMONTORへ復帰
-      41/     42A : 7959                    SKIP   R1,NZ
-      42/     42B : CFFD                    B      *-3
-      43/     42C : D72D                    B      (X'2D')
-      44/     42D :                     
-      45/     42D :                     SDLOAD:                    ;LOAD処理
-      46/     42D : 8FEB                    BAL    INIT            ;SCA初期化
-      47/     42E : C01A                    L      R0,ADRS_DISP    ;アドレス部表示バッファからファイルNoを取得
-      48/     42F : 8035                    ST     R0,FNAME        ;ファイルNo保存
-      49/     430 : 6000                    CLR    R0
-      50/     431 : 0881                    MVI    R0,X'81'        ;ARDUINOへLOADコマンド'81'を送信
-      51/     432 : 8F33                    BAL    SNDBYTE
-      52/     433 : 8F3C                    BAL    RCVBYTE         ;ARDUINO状態取得 R0=ZEROなら正常
-      53/     434 : 6848                    AND    R0,R0,Z
-      54/     435 : CFE7                    B      SVERR
-      55/     436 : C035                    L      R0,FNAME        ;ファイルNo下位バイトを送信
-      56/     437 : 8F2E                    BAL    SNDBYTE
-      57/     438 : C135                    L      R1,FNAME        ;ファイルNo上位バイトを送信
-      58/     439 : 7009                    BSWP   R0,R1
-      59/     43A : 8F2B                    BAL    SNDBYTE
-      60/     43B : 8F34                    BAL    RCVBYTE         ;ファイルNoのファイルが存在しない場合はエラーとなる。それ以外の場合は正常としてR0=ZERO
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 2 - 10/23/2021 8:23:17
+      13/       0 :                     ;    ORG    X'0149'
+      14/       0 :                     ;    DC     LOAD_START      ;TLOAD定数
+      15/       0 :                     ;    DC     SAVE_START      ;TLOAD定数
+      16/       0 :                     
+      17/     416 :                         ORG    X'0416'         ;ROM先頭アドレス
+      18/     416 :                     ;    ORG    X'0500'         ;テスト用拡張ROM先頭アドレス
+      19/     416 :                         
+      20/     416 :                     LOAD_START:
+      21/     416 : CF17                    B      SDLOAD
+      22/     417 :                     SAVE_START:
+      23/     417 : CF30                    B      SDSAVE
+      24/     418 :                     
+      25/     418 :                     INIT:                      ;SCA初期化 DIモード
+      26/     418 : 6101                    CLR    R1
+      27/     419 : 0908                    MVI    R1,X'08'
+      28/     41A : 1150                    WT     R1,X'50'
+      29/     41B : 2003                    RET
+      30/     41C :                     
+      31/     41C :                     SVERR:                     ;SDカードエラー処理
+      32/     41C : 089E                    MVI    R0,X'9E'        ;errと表示して停止
+      33/     41D : 801F                    ST     R0,X'1F'
+      34/     41E : 080E                    MVI    R0,X'0E'
+      35/     41F : 8020                    ST     R0,X'20'
+      36/     420 : 080E                    MVI    R0,X'0E'
+      37/     421 : 8021                    ST     R0,X'21'
+      38/     422 : 6000                    CLR    R0
+      39/     423 : 8022                    ST     R0,X'22'
+      40/     424 : 801B                    ST     R0,X'1B'
+      41/     425 : 801C                    ST     R0,X'1C'
+      42/     426 : 801D                    ST     R0,X'1D'
+      43/     427 : 801E                    ST     R0,X'1E'
+      44/     428 :                     
+      45/     428 : 9734                    BAL    (X'34')
+      46/     429 : 9733                    BAL    (X'33')         ;STOP以外のキー押下でMONTORへ復帰
+      47/     42A : 7959                    SKIP   R1,NZ
+      48/     42B : CFFD                    B      *-3
+      49/     42C : D72D                    B      (X'2D')
+      50/     42D :                     
+      51/     42D :                     SDLOAD:                    ;LOAD処理
+      52/     42D : 8FEB                    BAL    INIT            ;SCA初期化
+      53/     42E : C01A                    L      R0,ADRS_DISP    ;アドレス部表示バッファからファイルNoを取得
+      54/     42F : 8035                    ST     R0,FNAME        ;ファイルNo保存
+      55/     430 : 6000                    CLR    R0
+      56/     431 : 0881                    MVI    R0,X'81'        ;ARDUINOへLOADコマンド'81'を送信
+      57/     432 : 8F33                    BAL    SNDBYTE
+      58/     433 : 8F3C                    BAL    RCVBYTE         ;ARDUINO状態取得 R0=ZEROなら正常
+      59/     434 : 6848                    AND    R0,R0,Z
+      60/     435 : CFE7                    B      SVERR
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 2 - 10/23/2021 11:45:10
 
 
-      61/     43C : 6848                    AND    R0,R0,Z
-      62/     43D : CFDF                    B      SVERR
-      63/     43E : 8F68                    BAL    HDRCV           ;ヘッダー部受信
-      64/     43F : 8F7A                    BAL    DBRCV           ;データ部受信
-      65/     440 : C00C                    L      R0,SADRS        ;ロード開始アドレスをFUNC(5)にセット
-      66/     441 : 8025                    ST     R0,EXEAD
-      67/     442 : C10D                    L      R1,EADRS        ;LOAD処理時にはロード終了アドレスは「ロード終了アドレス-ロード開始アドレス」として保存しているのでロード終了アドレスを再計算して再保存
-      68/     443 : 5809                    A      R0,R1
-      69/     444 : 4001                    SI     R0,1
-      70/     445 : 800D                    ST     R0,EADRS
-      71/     446 : CF0F                    B      SDSV3           ;正常終了処理
-      72/     447 :                         
-      73/     447 :                     SDSAVE:                    ;SAVE処理
-      74/     447 : 8FD1                    BAL    INIT            ;SCA初期化
-      75/     448 : C01A                    L      R0,ADRS_DISP    ;アドレス部表示バッファからファイルNoを取得
-      76/     449 : 8035                    ST     R0,FNAME        ;ファイルNo保存
-      77/     44A : 6000                    CLR    R0
-      78/     44B : 0880                    MVI    R0,X'80'        ;ARDUINOへSAVEコマンド'80'を送信
-      79/     44C : 8F19                    BAL    SNDBYTE
-      80/     44D : 8F22                    BAL    RCVBYTE         ;ARDUINO状態取得 R0=ZEROなら正常
-      81/     44E : 6848                    AND    R0,R0,Z
-      82/     44F : CFCD                    B      SVERR
-      83/     450 : 8F29                    BAL    HDSEND          ;ヘッダー部送信
-      84/     451 : 8F1E                    BAL    RCVBYTE         ;既存のファイルNoもしくは7FFFh以下の場合はエラーとなる。それ以外の場合は正常としてR0=ZERO
-      85/     452 : 6848                    AND    R0,R0,Z
-      86/     453 : CFC9                    B      SVERR
-      87/     454 : 8F3C                    BAL    DBSEND          ;データ部送信
-      88/     455 :                     SDSV3:
-      89/     455 : 08BA                    MVI    R0,X'BA'        ;正常終了処理
-      90/     456 : 801F                    ST     R0,X'1F'
-      91/     457 : 085E                    MVI    R0,X'5E'
-      92/     458 : 8020                    ST     R0,X'20'
-      93/     459 : 6000                    CLR    R0
-      94/     45A : 8021                    ST     R0,X'21'
-      95/     45B : 8022                    ST     R0,X'22'
-      96/     45C : 801B                    ST     R0,X'1B'
-      97/     45D : 801C                    ST     R0,X'1C'
-      98/     45E : 801D                    ST     R0,X'1D'
-      99/     45F : 801E                    ST     R0,X'1E'
-     100/     460 :                     
-     101/     460 : 9734                    BAL    (X'34')
-     102/     461 : 9733                    BAL    (X'33')         ;STOP以外のキー押下でMONTORへ復帰
-     103/     462 : 7959                    SKIP   R1,NZ
-     104/     463 : CFFD                    B      *-3
-     105/     464 : D72D                    B      (X'2D')
-     106/     465 :                     
-     107/     465 :                     SNDBYTE:                   ;1Byte送信処理(R0の下位バイトを下位ビットから送信)
-     108/     465 : 6202                    CLR    R2
-     109/     466 : 0A08                    MVI    R2,X'08'        ;1Bit送信を8回繰り返し
-     110/     467 :                     SBLOP1:
-     111/     467 : 6101                    CLR    R1
-     112/     468 : 0908                    MVI    R1,X'08'        ;送信データ(R1)にZEROをセット
-     113/     469 : 2088                    SR     R0,EZ           ;R0右ローテート Eフラグが'1'なら送信データ(R1)を'1'とする
-     114/     46A : 390E                    SBIT   R1,X'0E'
-     115/     46B : 8F63                    BAL    SND1BIT         ;1Bit送信
-     116/     46C : 4241                    SI     R2,1,Z          ;繰り返し
-     117/     46D : CFFA                    B      SBLOP1
-     118/     46E : 2003                    RET
-     119/     46F :                     
-     120/     46F :                     RCVBYTE:                   ;1Byte受信処理(R0下位バイトに受信データを格納してリターン)
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 3 - 10/23/2021 8:23:17
+      61/     436 : C035                    L      R0,FNAME        ;ファイルNo下位バイトを送信
+      62/     437 : 8F2E                    BAL    SNDBYTE
+      63/     438 : C135                    L      R1,FNAME        ;ファイルNo上位バイトを送信
+      64/     439 : 7009                    BSWP   R0,R1
+      65/     43A : 8F2B                    BAL    SNDBYTE
+      66/     43B : 8F34                    BAL    RCVBYTE         ;ファイルNoのファイルが存在しない場合はエラーとなる。それ以外の場合は正常としてR0=ZERO
+      67/     43C : 6848                    AND    R0,R0,Z
+      68/     43D : CFDF                    B      SVERR
+      69/     43E : 8F68                    BAL    HDRCV           ;ヘッダー部受信
+      70/     43F : 8F7A                    BAL    DBRCV           ;データ部受信
+      71/     440 : C00C                    L      R0,SADRS        ;ロード開始アドレスをFUNC(5)にセット
+      72/     441 : 8025                    ST     R0,EXEAD
+      73/     442 : C10D                    L      R1,EADRS        ;LOAD処理時にはロード終了アドレスは「ロード終了アドレス-ロード開始アドレス」として保存しているのでロード終了アドレスを再計算して再保存
+      74/     443 : 5809                    A      R0,R1
+      75/     444 : 4001                    SI     R0,1
+      76/     445 : 800D                    ST     R0,EADRS
+      77/     446 : CF0F                    B      SDSV3           ;正常終了処理
+      78/     447 :                         
+      79/     447 :                     SDSAVE:                    ;SAVE処理
+      80/     447 : 8FD1                    BAL    INIT            ;SCA初期化
+      81/     448 : C01A                    L      R0,ADRS_DISP    ;アドレス部表示バッファからファイルNoを取得
+      82/     449 : 8035                    ST     R0,FNAME        ;ファイルNo保存
+      83/     44A : 6000                    CLR    R0
+      84/     44B : 0880                    MVI    R0,X'80'        ;ARDUINOへSAVEコマンド'80'を送信
+      85/     44C : 8F19                    BAL    SNDBYTE
+      86/     44D : 8F22                    BAL    RCVBYTE         ;ARDUINO状態取得 R0=ZEROなら正常
+      87/     44E : 6848                    AND    R0,R0,Z
+      88/     44F : CFCD                    B      SVERR
+      89/     450 : 8F29                    BAL    HDSEND          ;ヘッダー部送信
+      90/     451 : 8F1E                    BAL    RCVBYTE         ;既存のファイルNoもしくは7FFFh以下の場合はエラーとなる。それ以外の場合は正常としてR0=ZERO
+      91/     452 : 6848                    AND    R0,R0,Z
+      92/     453 : CFC9                    B      SVERR
+      93/     454 : 8F3C                    BAL    DBSEND          ;データ部送信
+      94/     455 :                     SDSV3:
+      95/     455 : 08BA                    MVI    R0,X'BA'        ;正常終了処理
+      96/     456 : 801F                    ST     R0,X'1F'
+      97/     457 : 085E                    MVI    R0,X'5E'
+      98/     458 : 8020                    ST     R0,X'20'
+      99/     459 : 6000                    CLR    R0
+     100/     45A : 8021                    ST     R0,X'21'
+     101/     45B : 8022                    ST     R0,X'22'
+     102/     45C : 801B                    ST     R0,X'1B'
+     103/     45D : 801C                    ST     R0,X'1C'
+     104/     45E : 801D                    ST     R0,X'1D'
+     105/     45F : 801E                    ST     R0,X'1E'
+     106/     460 :                     
+     107/     460 : 9734                    BAL    (X'34')
+     108/     461 : 9733                    BAL    (X'33')         ;STOP以外のキー押下でMONTORへ復帰
+     109/     462 : 7959                    SKIP   R1,NZ
+     110/     463 : CFFD                    B      *-3
+     111/     464 : D72D                    B      (X'2D')
+     112/     465 :                     
+     113/     465 :                     SNDBYTE:                   ;1Byte送信処理(R0の下位バイトを下位ビットから送信)
+     114/     465 : 6202                    CLR    R2
+     115/     466 : 0A08                    MVI    R2,X'08'        ;1Bit送信を8回繰り返し
+     116/     467 :                     SBLOP1:
+     117/     467 : 6101                    CLR    R1
+     118/     468 : 0908                    MVI    R1,X'08'        ;送信データ(R1)にZEROをセット
+     119/     469 : 2088                    SR     R0,EZ           ;R0右ローテート Eフラグが'1'なら送信データ(R1)を'1'とする
+     120/     46A : 390E                    SBIT   R1,X'0E'
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 3 - 10/23/2021 11:45:10
 
 
-     121/     46F : 6202                    CLR    R2
-     122/     470 : 0A08                    MVI    R2,X'08'        ;1Bit受信を8回繰り返し
-     123/     471 : 6404                    CLR    R4              ;WorkとしてR4を使用
-     124/     472 :                     RBLOP1:
-     125/     472 : 8F64                    BAL    RCV1BIT         ;1Bit受信(R0 0=0000h、1=0080h)
-     126/     473 : 2409                    SR     R4,RE           ;R4右ローテート
-     127/     474 : 6408                    OR     R4,R0           ;R4とR0を合成
-     128/     475 : 4241                    SI     R2,1,Z          ;繰り返し
-     129/     476 : CFFC                    B      RBLOP1
-     130/     477 : 780C                    MV     R0,R4           ;R0にR4をコピーしてリターン
-     131/     478 : 2003                    RET
-     132/     479 :                     
-     133/     479 :                     HDSEND:                    ;ヘッダー部送信処理
-     134/     479 : C035                    L      R0,FNAME        ;ファイルNo下位バイトを送信
-     135/     47A : 8FEB                    BAL    SNDBYTE
-     136/     47B : C135                    L      R1,FNAME        ;ファイルNo上位バイトを送信
-     137/     47C : 7009                    BSWP   R0,R1
-     138/     47D : 8FE8                    BAL    SNDBYTE
-     139/     47E :                         
-     140/     47E : C00C                    L      R0,SADRS        ;セーブ開始アドレス下位バイトを送信
-     141/     47F : 8FE6                    BAL    SNDBYTE
-     142/     480 : C10C                    L      R1,SADRS        ;セーブ開始アドレス上位バイトを送信
-     143/     481 : 7009                    BSWP   R0,R1
-     144/     482 : 8FE3                    BAL    SNDBYTE
-     145/     483 :                         
-     146/     483 : C10D                    L      R1,EADRS        ;セーブ終了アドレスを8Bit換算
-     147/     484 : C00C                    L      R0,SADRS
-     148/     485 : 5900                    S      R1,R0           ;スタートアドレスとの差分を算出
-     149/     486 : 210D                    SL     R1,RE           ;差分x2
-     150/     487 : 5908                    A      R1,R0           ;スタートアドレスを加算
-     151/     488 : 4901                    AI     R1,1            ;+1
-     152/     489 : 2101                    PUSH   R1              ;SNDBYTEでR1が破壊されるのでPUSH
-     153/     48A : 7809                    MV     R0,R1
-     154/     48B : 8FDA                    BAL    SNDBYTE         ;セーブ終了アドレス下位バイトを送信
-     155/     48C : 2102                    POP    R1
-     156/     48D : 7009                    BSWP   R0,R1
-     157/     48E : 8FD7                    BAL    SNDBYTE         ;セーブ終了アドレス上位バイトを送信
-     158/     48F : 2003                    RET
-     159/     490 :                     
-     160/     490 :                     DBSEND:                    ;データ部送信処理
-     161/     490 : C40D                    L      R4,EADRS        ;セーブ終了アドレス-セーブ開始アドレス+1をループ回数としてR4にセット
-     162/     491 : 4C01                    AI     R4,1
-     163/     492 : C30C                    L      X0,SADRS        ;セーブ開始アドレスをX0にセット
-     164/     493 : 5C03                    S      R4,X0
-     165/     494 :                     DBSLOP:
-     166/     494 : 2401                    PUSH   R4              ;R4はSNDBYTEで破壊されるのでPUSH
-     167/     495 : E100                    L      R1,(X0)         ;データ上位バイトを送信
-     168/     496 : 7009                    BSWP   R0,R1
-     169/     497 : 8FCE                    BAL    SNDBYTE
-     170/     498 : E000                    L      R0,(X0)         ;データ下位バイトを送信
-     171/     499 : 8FCC                    BAL    SNDBYTE
-     172/     49A :                     
-     173/     49A : E100                    L      R1,(X0)
-     174/     49B : 831A                    ST     X0,X'1A'
-     175/     49C : 8119                    ST     R1,X'19'
-     176/     49D : 2301                    PUSH   X0
-     177/     49E : 9730                    BAL    (X'30')
-     178/     49F : 9734                    BAL    (X'34')         ;送信したデータおよびアドレスを表示
-     179/     4A0 : 2302                    POP    X0
-     180/     4A1 :                     
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 4 - 10/23/2021 8:23:17
+     121/     46B : 8F63                    BAL    SND1BIT         ;1Bit送信
+     122/     46C : 4241                    SI     R2,1,Z          ;繰り返し
+     123/     46D : CFFA                    B      SBLOP1
+     124/     46E : 2003                    RET
+     125/     46F :                     
+     126/     46F :                     RCVBYTE:                   ;1Byte受信処理(R0下位バイトに受信データを格納してリターン)
+     127/     46F : 6202                    CLR    R2
+     128/     470 : 0A08                    MVI    R2,X'08'        ;1Bit受信を8回繰り返し
+     129/     471 : 6404                    CLR    R4              ;WorkとしてR4を使用
+     130/     472 :                     RBLOP1:
+     131/     472 : 8F64                    BAL    RCV1BIT         ;1Bit受信(R0 0=0000h、1=0080h)
+     132/     473 : 2409                    SR     R4,RE           ;R4右ローテート
+     133/     474 : 6408                    OR     R4,R0           ;R4とR0を合成
+     134/     475 : 4241                    SI     R2,1,Z          ;繰り返し
+     135/     476 : CFFC                    B      RBLOP1
+     136/     477 : 780C                    MV     R0,R4           ;R0にR4をコピーしてリターン
+     137/     478 : 2003                    RET
+     138/     479 :                     
+     139/     479 :                     HDSEND:                    ;ヘッダー部送信処理
+     140/     479 : C035                    L      R0,FNAME        ;ファイルNo下位バイトを送信
+     141/     47A : 8FEB                    BAL    SNDBYTE
+     142/     47B : C135                    L      R1,FNAME        ;ファイルNo上位バイトを送信
+     143/     47C : 7009                    BSWP   R0,R1
+     144/     47D : 8FE8                    BAL    SNDBYTE
+     145/     47E :                         
+     146/     47E : C00C                    L      R0,SADRS        ;セーブ開始アドレス下位バイトを送信
+     147/     47F : 8FE6                    BAL    SNDBYTE
+     148/     480 : C10C                    L      R1,SADRS        ;セーブ開始アドレス上位バイトを送信
+     149/     481 : 7009                    BSWP   R0,R1
+     150/     482 : 8FE3                    BAL    SNDBYTE
+     151/     483 :                         
+     152/     483 : C10D                    L      R1,EADRS        ;セーブ終了アドレスを8Bit換算
+     153/     484 : C00C                    L      R0,SADRS
+     154/     485 : 5900                    S      R1,R0           ;スタートアドレスとの差分を算出
+     155/     486 : 210D                    SL     R1,RE           ;差分x2
+     156/     487 : 5908                    A      R1,R0           ;スタートアドレスを加算
+     157/     488 : 4901                    AI     R1,1            ;+1
+     158/     489 : 2101                    PUSH   R1              ;SNDBYTEでR1が破壊されるのでPUSH
+     159/     48A : 7809                    MV     R0,R1
+     160/     48B : 8FDA                    BAL    SNDBYTE         ;セーブ終了アドレス下位バイトを送信
+     161/     48C : 2102                    POP    R1
+     162/     48D : 7009                    BSWP   R0,R1
+     163/     48E : 8FD7                    BAL    SNDBYTE         ;セーブ終了アドレス上位バイトを送信
+     164/     48F : 2003                    RET
+     165/     490 :                     
+     166/     490 :                     DBSEND:                    ;データ部送信処理
+     167/     490 : C40D                    L      R4,EADRS        ;セーブ終了アドレス-セーブ開始アドレス+1をループ回数としてR4にセット
+     168/     491 : 4C01                    AI     R4,1
+     169/     492 : C30C                    L      X0,SADRS        ;セーブ開始アドレスをX0にセット
+     170/     493 : 5C03                    S      R4,X0
+     171/     494 :                     DBSLOP:
+     172/     494 : 2401                    PUSH   R4              ;R4はSNDBYTEで破壊されるのでPUSH
+     173/     495 : E100                    L      R1,(X0)         ;データ上位バイトを送信
+     174/     496 : 7009                    BSWP   R0,R1
+     175/     497 : 8FCE                    BAL    SNDBYTE
+     176/     498 : E000                    L      R0,(X0)         ;データ下位バイトを送信
+     177/     499 : 8FCC                    BAL    SNDBYTE
+     178/     49A :                     
+     179/     49A : E100                    L      R1,(X0)
+     180/     49B : 831A                    ST     X0,X'1A'
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 4 - 10/23/2021 11:45:10
 
 
-     181/     4A1 : 4B01                    AI     X0,1
-     182/     4A2 : 2402                    POP    R4
-     183/     4A3 : 4441                    SI     R4,1,Z          ;繰り返し
-     184/     4A4 : CFF0                    B      DBSLOP
-     185/     4A5 : 2003                    RET
-     186/     4A6 :                     
-     187/     4A6 :                     
-     188/     4A6 :                     HDRCV:                     ;ヘッダー部受信処理
-     189/     4A6 : 8FC9                    BAL    RCVBYTE         ;ロード開始アドレス上位バイト受信
-     190/     4A7 : 7108                    BSWP   R1,R0
-     191/     4A8 : 810C                    ST     R1,SADRS
-     192/     4A9 : 8FC6                    BAL    RCVBYTE         ;ロード開始アドレス下位バイト受信
-     193/     4AA : C10C                    L      R1,SADRS
-     194/     4AB : 7900                    MVB    R1,R0
-     195/     4AC : 810C                    ST     R1,SADRS        ;ロード開始アドレス保存
-     196/     4AD : 8FC2                    BAL    RCVBYTE         ;ロード終了アドレス上位バイト受信
-     197/     4AE : 7108                    BSWP   R1,R0
-     198/     4AF : 810D                    ST     R1,EADRS
-     199/     4B0 : 8FBF                    BAL    RCVBYTE         ;ロード終了アドレス下位バイト受信
-     200/     4B1 : C10D                    L      R1,EADRS
-     201/     4B2 : 7900                    MVB    R1,R0           ;R1 <- ロード終了アドレス
-     202/     4B3 :                         
-     203/     4B3 : C00C                    L      R0,SADRS        ;ロード終了アドレスを16BitWord差分として換算しループ回数とする
-     204/     4B4 : 4901                    AI     R1,1            ;(ロード終了アドレス-ロード開始アドレス+1)/2
-     205/     4B5 : 5900                    S      R1,R0
-     206/     4B6 : 2109                    SR     R1,RE
-     207/     4B7 : 810D                    ST     R1,EADRS        ;受信ループ回数保存
-     208/     4B8 :                         
-     209/     4B8 : 2003                    RET
-     210/     4B9 :                     
-     211/     4B9 :                     DBRCV:                     ;データ部受信処理
-     212/     4B9 : C40D                    L      R4,EADRS        ;R4にループ回数セット
-     213/     4BA : C30C                    L      X0,SADRS        ;X0にロード開始アドレスをセット
-     214/     4BB :                     DBRLOP:
-     215/     4BB : 2401                    PUSH   R4              ;R4はRCVBYTEで破壊されるのでPUSH
-     216/     4BC : 8FB3                    BAL    RCVBYTE         ;データ上位バイト受信
-     217/     4BD : 7108                    BSWP   R1,R0
-     218/     4BE : A100                    ST     R1,(X0)
-     219/     4BF : 8FB0                    BAL    RCVBYTE         ;データ下位バイト受信
-     220/     4C0 : E100                    L      R1,(X0)
-     221/     4C1 : 7900                    MVB    R1,R0
-     222/     4C2 : A100                    ST     R1,(X0)         ;(X0) <- データ(R1)
-     223/     4C3 :                     
-     224/     4C3 : 831A                    ST     X0,X'1A'
-     225/     4C4 : 8119                    ST     R1,X'19'
-     226/     4C5 : 2301                    PUSH   X0
-     227/     4C6 : 9730                    BAL    (X'30')
-     228/     4C7 : 9734                    BAL    (X'34')         ;受信したデータおよびアドレスを表示
-     229/     4C8 : 2302                    POP    X0
-     230/     4C9 :                     
-     231/     4C9 : 4B01                    AI     X0,1
-     232/     4CA : 2402                    POP    R4
-     233/     4CB : 4441                    SI     R4,1,Z          ;繰り返し
-     234/     4CC : CFEF                    B      DBRLOP
-     235/     4CD : 2003                    RET
-     236/     4CE :                     
-     237/     4CE :                     SND1BIT:                   ;1Bit送信(R1のデータを送信)
-     238/     4CE : 1150                    WT     R1,X'50'        ;データ送信    
-     239/     4CF : 390D                    SBIT   R1,X'0D'        ;送信FLGセット
-     240/     4D0 : 1150                    WT     R1,X'50'
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 5 - 10/23/2021 8:23:17
+     181/     49C : 8119                    ST     R1,X'19'
+     182/     49D : 2301                    PUSH   X0
+     183/     49E : 9730                    BAL    (X'30')
+     184/     49F : 9734                    BAL    (X'34')         ;送信したデータおよびアドレスを表示
+     185/     4A0 : 2302                    POP    X0
+     186/     4A1 :                     
+     187/     4A1 : 4B01                    AI     X0,1
+     188/     4A2 : 2402                    POP    R4
+     189/     4A3 : 4441                    SI     R4,1,Z          ;繰り返し
+     190/     4A4 : CFF0                    B      DBSLOP
+     191/     4A5 : 2003                    RET
+     192/     4A6 :                     
+     193/     4A6 :                     
+     194/     4A6 :                     HDRCV:                     ;ヘッダー部受信処理
+     195/     4A6 : 8FC9                    BAL    RCVBYTE         ;ロード開始アドレス上位バイト受信
+     196/     4A7 : 7108                    BSWP   R1,R0
+     197/     4A8 : 810C                    ST     R1,SADRS
+     198/     4A9 : 8FC6                    BAL    RCVBYTE         ;ロード開始アドレス下位バイト受信
+     199/     4AA : C10C                    L      R1,SADRS
+     200/     4AB : 7900                    MVB    R1,R0
+     201/     4AC : 810C                    ST     R1,SADRS        ;ロード開始アドレス保存
+     202/     4AD : 8FC2                    BAL    RCVBYTE         ;ロード終了アドレス上位バイト受信
+     203/     4AE : 7108                    BSWP   R1,R0
+     204/     4AF : 810D                    ST     R1,EADRS
+     205/     4B0 : 8FBF                    BAL    RCVBYTE         ;ロード終了アドレス下位バイト受信
+     206/     4B1 : C10D                    L      R1,EADRS
+     207/     4B2 : 7900                    MVB    R1,R0           ;R1 <- ロード終了アドレス
+     208/     4B3 :                         
+     209/     4B3 : C00C                    L      R0,SADRS        ;ロード終了アドレスを16BitWord差分として換算しループ回数とする
+     210/     4B4 : 4901                    AI     R1,1            ;(ロード終了アドレス-ロード開始アドレス+1)/2
+     211/     4B5 : 5900                    S      R1,R0
+     212/     4B6 : 2109                    SR     R1,RE
+     213/     4B7 : 810D                    ST     R1,EADRS        ;受信ループ回数保存
+     214/     4B8 :                         
+     215/     4B8 : 2003                    RET
+     216/     4B9 :                     
+     217/     4B9 :                     DBRCV:                     ;データ部受信処理
+     218/     4B9 : C40D                    L      R4,EADRS        ;R4にループ回数セット
+     219/     4BA : C30C                    L      X0,SADRS        ;X0にロード開始アドレスをセット
+     220/     4BB :                     DBRLOP:
+     221/     4BB : 2401                    PUSH   R4              ;R4はRCVBYTEで破壊されるのでPUSH
+     222/     4BC : 8FB3                    BAL    RCVBYTE         ;データ上位バイト受信
+     223/     4BD : 7108                    BSWP   R1,R0
+     224/     4BE : A100                    ST     R1,(X0)
+     225/     4BF : 8FB0                    BAL    RCVBYTE         ;データ下位バイト受信
+     226/     4C0 : E100                    L      R1,(X0)
+     227/     4C1 : 7900                    MVB    R1,R0
+     228/     4C2 : A100                    ST     R1,(X0)         ;(X0) <- データ(R1)
+     229/     4C3 :                     
+     230/     4C3 : 831A                    ST     X0,X'1A'
+     231/     4C4 : 8119                    ST     R1,X'19'
+     232/     4C5 : 2301                    PUSH   X0
+     233/     4C6 : 9730                    BAL    (X'30')
+     234/     4C7 : 9734                    BAL    (X'34')         ;受信したデータおよびアドレスを表示
+     235/     4C8 : 2302                    POP    X0
+     236/     4C9 :                     
+     237/     4C9 : 4B01                    AI     X0,1
+     238/     4CA : 2402                    POP    R4
+     239/     4CB : 4441                    SI     R4,1,Z          ;繰り返し
+     240/     4CC : CFEF                    B      DBRLOP
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S - Page 5 - 10/23/2021 11:45:10
 
 
-     241/     4D1 : 8F10                    BAL    F1CHK           ;受信FLGがセットされるまで待ち
-     242/     4D2 : 0908                    MVI    R1,X'08'        ;受信FLGがセットされたら送信FLGをリセット
-     243/     4D3 :                     ;    RBIT   R1,X'0D'
-     244/     4D3 : 1150                    WT     R1,X'50'
-     245/     4D4 : 8F11                    BAL    F2CHK           ;受信FLGがリセットされるまで待ち
-     246/     4D5 : 2003                    RET
-     247/     4D6 :                     
-     248/     4D6 :                     RCV1BIT:                   ;1Bit受信(R0にデータを受信)
-     249/     4D6 : 8F0B                    BAL    F1CHK           ;受信FLGがセットされるまで待つ
-     250/     4D7 : 390D                    SBIT   R1,X'0D'        ;送信FLGセット
-     251/     4D8 : 1150                    WT     R1,X'50'
-     252/     4D9 : 6000                    CLR    R0
-     253/     4DA : 1951                    RD     R1,X'51'        ;受信データ取得(R0 0=0000h、1=0080h)
-     254/     4DB : 294D                    TBIT   R1,X'0D',Z
-     255/     4DC : 0880                    MVI    R0,X'80'
-     256/     4DD : 8F08                    BAL    F2CHK           ;受信FLGがリセットされるまで待ち
-     257/     4DE : 0908                    MVI    R1,X'08'        ;送信FLGリセット
-     258/     4DF :                     ;    RBIT   R1,X'0D'
-     259/     4DF : 1150                    WT     R1,X'50'
-     260/     4E0 : 2003                    RET
-     261/     4E1 :                     
-     262/     4E1 :                     ;   ST0をCHECK(1)
-     263/     4E1 :                     ;   ST0が1になるまでLOOP
-     264/     4E1 :                     F1CHK:
-     265/     4E1 : 1951                    RD     R1,X'51'
-     266/     4E2 : 295C                    TBIT   R1,x'0C',NZ
-     267/     4E3 : CFFE                    B      F1CHK
-     268/     4E4 : 2003                    RET
-     269/     4E5 :                     
-     270/     4E5 :                     ;   ST0をCHECK(0)
-     271/     4E5 :                     ;   ST0が0になるまでLOOP
-     272/     4E5 :                     F2CHK:
-     273/     4E5 : 1951                    RD     R1,X'51'
-     274/     4E6 : 294C                    TBIT   R1,X'0C',Z
-     275/     4E7 : CFFE                    B      F2CHK
-     276/     4E8 : 2003                    RET
-     277/     4E9 :                     
-     278/     4E9 :                     
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S() - Page 6 - 10/23/2021 8:23:17
+     241/     4CD : 2003                    RET
+     242/     4CE :                     
+     243/     4CE :                     SND1BIT:                   ;1Bit送信(R1のデータを送信)
+     244/     4CE : 1150                    WT     R1,X'50'        ;データ送信    
+     245/     4CF : 390D                    SBIT   R1,X'0D'        ;送信FLGセット
+     246/     4D0 : 1150                    WT     R1,X'50'
+     247/     4D1 : 8F10                    BAL    F1CHK           ;受信FLGがセットされるまで待ち
+     248/     4D2 : 0908                    MVI    R1,X'08'        ;受信FLGがセットされたら送信FLGをリセット
+     249/     4D3 :                     ;    RBIT   R1,X'0D'
+     250/     4D3 : 1150                    WT     R1,X'50'
+     251/     4D4 : 8F11                    BAL    F2CHK           ;受信FLGがリセットされるまで待ち
+     252/     4D5 : 2003                    RET
+     253/     4D6 :                     
+     254/     4D6 :                     RCV1BIT:                   ;1Bit受信(R0にデータを受信)
+     255/     4D6 : 8F0B                    BAL    F1CHK           ;受信FLGがセットされるまで待つ
+     256/     4D7 : 390D                    SBIT   R1,X'0D'        ;送信FLGセット
+     257/     4D8 : 1150                    WT     R1,X'50'
+     258/     4D9 : 6000                    CLR    R0
+     259/     4DA : 1951                    RD     R1,X'51'        ;受信データ取得(R0 0=0000h、1=0080h)
+     260/     4DB : 294D                    TBIT   R1,X'0D',Z
+     261/     4DC : 0880                    MVI    R0,X'80'
+     262/     4DD : 8F08                    BAL    F2CHK           ;受信FLGがリセットされるまで待ち
+     263/     4DE : 0908                    MVI    R1,X'08'        ;送信FLGリセット
+     264/     4DF :                     ;    RBIT   R1,X'0D'
+     265/     4DF : 1150                    WT     R1,X'50'
+     266/     4E0 : 2003                    RET
+     267/     4E1 :                     
+     268/     4E1 :                     ;   ST0をCHECK(1)
+     269/     4E1 :                     ;   ST0が1になるまでLOOP
+     270/     4E1 :                     F1CHK:
+     271/     4E1 : 1951                    RD     R1,X'51'
+     272/     4E2 : 295C                    TBIT   R1,x'0C',NZ
+     273/     4E3 : CFFE                    B      F1CHK
+     274/     4E4 : 2003                    RET
+     275/     4E5 :                     
+     276/     4E5 :                     ;   ST0をCHECK(0)
+     277/     4E5 :                     ;   ST0が0になるまでLOOP
+     278/     4E5 :                     F2CHK:
+     279/     4E5 : 1951                    RD     R1,X'51'
+     280/     4E6 : 294C                    TBIT   R1,X'0C',Z
+     281/     4E7 : CFFE                    B      F2CHK
+     282/     4E8 : 2003                    RET
+     283/     4E9 :                     
+     284/     4E9 :                     
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S() - Page 6 - 10/23/2021 11:45:10
 
 
   Symbol Table (* = unused):
@@ -314,23 +320,24 @@
 *INEXTMODE :                      0 - |  INIT :                         418 C |
 *INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
 *INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
-*LISTON :                         1 - | *MACEXP :                         7 - |
-*MOMCPU :                      1610 - | *MOMCPUNAME :              "MN1610" - |
-*NESTMAX :                      100 - | *PACKING :                        0 - |
-*PADDING :                        1 - |  RBLOP1 :                       472 C |
- RCV1BIT :                      4D6 C |  RCVBYTE :                      46F C |
-*RELAXED :                        0 - |  SADRS :                          C - |
+*LISTON :                         1 - | *LOAD_START :                   416 C |
+*MACEXP :                         7 - | *MOMCPU :                      1610 - |
+*MOMCPUNAME :              "MN1610" - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ RBLOP1 :                       472 C |  RCV1BIT :                      4D6 C |
+ RCVBYTE :                      46F C | *RELAXED :                        0 - |
+ SADRS :                          C - | *SAVE_START :                   417 C |
  SBLOP1 :                       467 C |  SDLOAD :                       42D C |
  SDSAVE :                       447 C |  SDSV3 :                        455 C |
  SND1BIT :                      4CE C |  SNDBYTE :                      465 C |
- SVERR :                        41C C | *TIME :                   "8:23:17" - |
+ SVERR :                        41C C | *TIME :                  "11:45:10" - |
 *TRUE :                           1 - | *VERSION :                     142F - |
 *Z80SYNTAX :                      0 - |
 
-     55 symbols
-     31 unused symbols
+     57 symbols
+     33 unused symbols
 
- AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S() - Page 7 - 10/23/2021 8:23:17
+ AS V1.42 Beta [Bld 211] - Source File file_trans_LKIT16.S() - Page 7 - 10/23/2021 11:45:10
 
 
   Code Pages:
@@ -340,9 +347,9 @@ STANDARD (0 changed characters)
 
 1 code page
 
-0.01 seconds assembly time
+0.00 seconds assembly time
 
-    278 lines source file
+    284 lines source file
       2 passes
       0 errors
       0 warnings
