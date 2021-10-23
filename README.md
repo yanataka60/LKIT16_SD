@@ -12,7 +12,7 @@ LKIT-16にSD-CARDを繋いだARDUINO(SD_ACCESS)とのシリアル同期通信に
 ## 注意点
 　下位バイト側のMN-1630増設は必須です。
 
-　LKIT-16のROMは2708で現在ROMの入手及び読み書き装置の入手が困難です。次のいずれかに該当される方はそのまま利用できます。
+　LKIT-16のROMは2708でROMの入手及び読み書き装置の入手が困難だと思われますので次のいずれかに該当される方のみを想定しています。
 
 　　・Monitor-ROMのダンプリストがあり、2708の書き換えも大丈夫
 
@@ -32,13 +32,13 @@ Arduino　　　　　　　　　　LKIT-16
    
 　　GND　　　　　　-----　　GND
    
-　　9(FLG:output)　　　-----　　ST0(CHK:input)
+　　9(FLG:output)　　-----　　ST0(CHK:input)
              
 　　8(OUT:output)　　-----　　ST1(IN:input)
                 
 　　7(CHK:input)　　　-----　　CM2(FLG:output)
                 
-　　6(IN :input)　　　　-----　　CM3(OUT:output)
+　　6(IN :input)　　　-----　　CM3(OUT:output)
 
 ## ROM
 　Monitor-ROMダンプリストがある方はfile_trans_LKIT16(H 0416-04E8).BINを上位バイトダンプ、file_trans_LKIT16(L 0416-04E8).BINを下位バイトダンプの内容に差し替えてください。
