@@ -1,6 +1,6 @@
 # PANAFACOM LKIT-16にSD-CARDとのロード、セーブ機能
 
-LKIT-16にSD-CARDを繋いだARDUINO(SD_ACCESS)とのシリアル同期通信によりロード、セーブを提供するルーチンです。
+シリアル同期通信によりLKIT-16とSD_ACCESS(ARDUINO+SD-CARD)とのロード、セーブを提供するルーチンです。
 
 ## 必要なハードウェア
  MN-1630(下位バイト側)
