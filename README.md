@@ -96,6 +96,25 @@ Arduino　　　　　　　　　　LKIT-16
 
 　LKIT-16は16Bitですが、btkファイルは8Bitを想定していますので終了アドレスは8Bit換算として設定してください。
 
+## 実装
+　実際に作成したアダプタです。
+
+アダプタの表です。
+
+![SD-Cardアダプタ(表)](https://github.com/yanataka60/LKIT16_SD/blob/main/JPG/SD-Card%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF(%E8%A1%A8).JPG)
+
+アダプタの裏です。
+
+![SD-Cardアダプタ(裏)](https://github.com/yanataka60/LKIT16_SD/blob/main/JPG/SD-Card%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF(%E8%A3%8F).JPG)
+
+LKIT-16側のコネクタ部です。
+
+![コネクタ](https://github.com/yanataka60/LKIT16_SD/blob/main/JPG/%E3%82%B3%E3%83%8D%E3%82%AF%E3%82%BF.JPG)
+
+実際に装着したところです。
+
+![装着](https://github.com/yanataka60/LKIT16_SD/blob/main/JPG/%E8%A3%85%E7%9D%80.JPG)
+
 ## その他
 　パソコン側のクロスアセンブラとしてThe　Macroassembler　AS　1.42Bld211を使っていますが、WT命令がWRとして定義されており、ソースをそのままアセンブルするとエラーが発生します。
 
